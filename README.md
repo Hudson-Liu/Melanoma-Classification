@@ -16,9 +16,9 @@ Root Directory
 ├── README.md
 ├── requirements.txt
 ├── docs/
-├── converted_savedmodel/
+├── converted_keras/
 │   ├── labels.txt
-│   └── model.savedmodel/
+│   └── keras_model.h5
 ├── ISIC_2020_Training_JPEG/
 │   ├── ISIC_2020_Training_GroundTruth.csv
 │   └── train
@@ -36,4 +36,10 @@ When running the program, use the following commands from the project directory:
 > pip install -r requirements.txt
 > python src/data.py
 > python src/eval.py
+```
+Make sure to use a Python version between 3.8 and 3.11, since Teachable Machine uses an older version of TensorFlow (2.12.1). On linux, the following can be used to create a proper virtual environment with pyenv:
+```bash
+> pyenv install 3.11.11
+> pyenv local 3.11.11
+> pyenv exec python3 -m venv [NAME_OF_ENV]
 ```

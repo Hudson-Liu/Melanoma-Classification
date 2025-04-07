@@ -1,5 +1,5 @@
 termcolor
-tensorflow
+tensorflow==2.12.1
 scikit-learn
 numpy
 pillow

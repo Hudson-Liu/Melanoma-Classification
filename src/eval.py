@@ -15,7 +15,7 @@ from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 import matplotlib.pyplot as plt
 
 # Load model & labels
-model = tf.keras.models.load_model("converted_savedmodel/model.savedmodel", compile=False)
+model = tf.keras.models.load_model("converted_keras/keras_model.h5", compile=False)
 class_names = open("converted_savedmodel/labels.txt", "r").readlines()
 
 # Create the array of the right shape
