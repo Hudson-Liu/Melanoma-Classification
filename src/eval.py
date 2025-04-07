@@ -16,11 +16,10 @@ import matplotlib.pyplot as plt
 
 # Load model & labels
 model = tf.keras.models.load_model("converted_keras/keras_model.h5", compile=False)
-class_names = open("converted_savedmodel/labels.txt", "r").readlines()
+class_names = open("converted_keras/labels.txt", "r").readlines()
 
 # Create the array of the right shape
-NUM_IMGS = 200
-data = np.ndarray(shape=(NUM_IMGS, 224, 224, 3), dtype=np.float32)
+data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
 
 def prep_img(filename: str):
     """Prepare a given image"""
@@ -42,7 +41,7 @@ def make_pred(data):
     # Prints for debugging purposes (can be removed)
     print("Class:", class_name[2:], end="")
     print("Confidence Score:", confidence_score)
-    return class_name[2:]
+    return class_name[2:-1]
 
 c = 0
 y_true = []
@@ -50,24 +49,24 @@ y_pred = []
 root = os.getcwd()
 
 # Benign
-os.chdir(root + "ISIC_2020_Training_JPEG/ben_t")
+os.chdir(root + "/ISIC_2020_Training_JPEG/ben_t")
 for f in os.listdir():
     # Generate Prediction
     data = prep_img(f)
     p = make_pred(data)
-    y_pred.append() 
+    y_pred.append(p) 
     y_true.append("Benign")
 
 # Malignant
-os.chdir(root + "ISIC_2020_Training_JPEG/mal_t")
+os.chdir(root + "/ISIC_2020_Training_JPEG/mal_t")
 for f in os.listdir():
     # Generate Prediction
     data = prep_img(f)
     p = make_pred(data)
-    y_pred.append() 
+    y_pred.append(p) 
     y_true.append("Malignant")
 
-conf_mat = confusion_matrix(y_true, y_pred)
-d = ConfusionMatrixDisplay(conf_mat)
+d = ConfusionMatrixDisplay.from_predictions(y_true, y_pred, labels=["Benign", "Malignant"], cmap="Blues")
 d.plot()
 plt.show()
+
