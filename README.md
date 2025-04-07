@@ -16,6 +16,9 @@ Root Directory
 ├── README.md
 ├── requirements.txt
 ├── docs/
+├── converted_savedmodel/
+│   ├── labels.txt
+│   └── model.savedmodel/
 ├── ISIC_2020_Training_JPEG/
 │   ├── ISIC_2020_Training_GroundTruth.csv
 │   └── train
@@ -24,5 +27,13 @@ Root Directory
 │       │   ...
 │       └── ISIC_9999.jpg
 └── src/
+    ├── eval.py
     └── data.py
+```
+
+When running the program, use the following commands from the project directory:
+```bash
+> pip install -r requirements.txt
+> python src/data.py
+> python src/eval.py
 ```

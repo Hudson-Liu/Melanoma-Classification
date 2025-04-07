@@ -1,1 +1,6 @@
 termcolor
+tensorflow
+scikit-learn
+numpy
+pillow
+matplotlib

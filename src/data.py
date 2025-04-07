@@ -6,7 +6,6 @@
 __author__ = "Hudson Liu"
 __email__ = "hudsonliu0@gmail.com"
 
-import os
 import shutil
 import sys
 import signal
@@ -39,14 +38,7 @@ def tui_helper():
     	colored("]=======", attrs=["bold"]))
     print(BANNER + HEADER)
 
-def data_proc(loc: str):
-    """Data processing shenanigans"""
-    d = loc + "train/"
-    df = pd.read_csv(f"{loc}ISIC_2020_Training_GroundTruth.csv")
-    labels = df[["image_name", "sex", "benign_malignant"]].to_numpy()
-    
-    NUM_IMGS = 600
-    totals = [0] * 4
+def splitter(labels, num_imgs: int):
     classes = [
         ["male", "benign"],
         ["male", "malignant"],
@@ -57,7 +49,7 @@ def data_proc(loc: str):
     mal = []
     for c in classes:
         f = 0
-        while f < NUM_IMGS // 4:
+        while f < num_imgs // 4:
             for e, l in enumerate(labels):
                 if l[1] == c[0] and l[2] == c[1]:
                     if c[1] == "malignant":
@@ -67,12 +59,27 @@ def data_proc(loc: str):
                     labels = np.delete(labels, e, axis=0)
                     f += 1
                     break
+            else:
+                break
+    return ben, mal, labels
+
+def data_proc(loc: str):
+    """Data processing shenanigans"""
+    d = loc + "train/"
+    df = pd.read_csv(f"{loc}ISIC_2020_Training_GroundTruth.csv")
+    labels = df[["image_name", "sex", "benign_malignant"]].to_numpy()
+
+    ben, mal, labels = splitter(labels, 600)
+    ben_t, mal_t, _ = splitter(labels, 200)
+    
     for f in tqdm(mal, desc="Malignant imgs"):
         shutil.copyfile(f"{d}{f}.jpg", f"{loc}mal/{f}.jpg")
-
     for f in tqdm(ben, desc="Benign imgs"):
        shutil.copyfile(f"{d}{f}.jpg", f"{loc}ben/{f}.jpg")
-
+    for f in tqdm(mal_t, desc="Malignant (test) imgs"):
+       shutil.copyfile(f"{d}{f}.jpg", f"{loc}mal_t/{f}.jpg")
+    for f in tqdm(ben_t, desc="Benign (test) imgs"):
+       shutil.copyfile(f"{d}{f}.jpg", f"{loc}ben_t/{f}.jpg")
      
 # Run script
 if __name__ == "__main__":

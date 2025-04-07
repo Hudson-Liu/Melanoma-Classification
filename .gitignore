@@ -1,5 +1,6 @@
 # Don't include the Melanoma Dataset
 ISIC_2020_Training_JPEG/
+converted_savedmodel/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
